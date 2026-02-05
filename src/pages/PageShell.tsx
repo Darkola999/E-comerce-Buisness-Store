@@ -5,10 +5,16 @@ type PageShellProps = {
   title: string;
   subtitle?: string;
   children?: React.ReactNode;
+  className?: string;
 };
 
-const PageShell: React.FC<PageShellProps> = ({ title, subtitle, children }) => (
-  <main className="page">
+const PageShell: React.FC<PageShellProps> = ({
+  title,
+  subtitle,
+  children,
+  className,
+}) => (
+  <main className={`page${className ? ` ${className}` : ''}`}>
     <div className="page__inner">
       <header className="page__header">
         <h1 className="page__title">{title}</h1>

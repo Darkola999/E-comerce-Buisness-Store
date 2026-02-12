@@ -1,5 +1,6 @@
 import React from 'react';
 import '../Styles/Footer.css';
+import type { IconType } from 'react-icons';
 import { FaEnvelope, FaFacebookF, FaLinkedinIn, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import brandLogo from '../assets/bourchanin new logo_Plan de travail 1.png';
@@ -40,15 +41,24 @@ const Footer: React.FC = () => (
         <h3 className="footer-title">Contact</h3>
         <ul className="footer-list footer-contact">
           <li>
-            <FaPhone className="footer-icon" aria-hidden="true" />
+            {React.createElement(FaPhone as IconType, {
+              className: 'footer-icon',
+              'aria-hidden': true,
+            })}
             <a href="tel:0123456789">01 23 45 67 89</a>
           </li>
           <li>
-            <FaEnvelope className="footer-icon" aria-hidden="true" />
+            {React.createElement(FaEnvelope as IconType, {
+              className: 'footer-icon',
+              'aria-hidden': true,
+            })}
             <a href="mailto:contact@voxup.com">contact@voxup.com</a>
           </li>
           <li>
-            <FaMapMarkerAlt className="footer-icon" aria-hidden="true" />
+            {React.createElement(FaMapMarkerAlt as IconType, {
+              className: 'footer-icon',
+              'aria-hidden': true,
+            })}
             <a href="https://maps.google.com/?q=123+Avenue+des+Vignes+75001+Paris+France">
               123 Avenue des Vignes
               <span>75001 Paris, France</span>

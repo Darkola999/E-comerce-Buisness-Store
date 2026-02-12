@@ -327,6 +327,26 @@
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
+.panel-item--cart {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel-item__image {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #f2ede6;
+}
+
+.panel-item__meta {
+  font-size: 12px;
+  opacity: 0.7;
+  color: #000;
+}
+
 .panel-item:hover {
   transform: translateY(-1px);
   border-color: rgba(255, 193, 7, 0.5);
@@ -357,6 +377,31 @@
 .panel-footer {
   display: flex;
   justify-content: flex-end;
+}
+
+.nav-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  background: #111111;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  font-weight: 600;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.2);
+  animation: navToastSlide 0.35s ease;
+  z-index: 12;
+}
+
+@keyframes navToastSlide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes panelReveal {

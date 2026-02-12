@@ -743,13 +743,10 @@
 .dashboard-goal__fill {
   display: block;
   height: 100%;
-  width: var(--goal-progress, 0%);
   border-radius: 999px;
   background: linear-gradient(90deg, #ffffff 0%, #fff1c1 100%);
   box-shadow: 0 0 14px rgba(255, 255, 255, 0.45);
-  transform: scaleX(0);
-  transform-origin: left;
-  animation: goalFill 0.9s ease forwards;
+  animation: goalFill 0.9s ease;
 }
 
 .dashboard-goal__meta {
@@ -763,10 +760,10 @@
 
 @keyframes goalFill {
   from {
-    transform: scaleX(0);
+    width: 0%;
   }
   to {
-    transform: scaleX(1);
+    width: 100%;
   }
 }
 

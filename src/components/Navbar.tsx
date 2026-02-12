@@ -1,23 +1,22 @@
 import React, { useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import '../Styles/Navbar.css';
 import brandLogo from '../assets/bourchanin new logo_Plan de travail 1.png';
+import { useCart } from '../context/CartContext';
 
 const Navbar: React.FC = () => {
+  const navigate = useNavigate();
+  const { cartItems, cartCount, clearCart, removeItem } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(true);
-  const [cartCount, setCartCount] = useState(2);
   const [notificationMessage, setNotificationMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const notificationTimer = useRef<number | null>(null);
   const [openPanel, setOpenPanel] = useState<'notifications' | 'cart' | 'profile' | null>(null);
   const [notifications, setNotifications] = useState([
     { id: 1, title: 'Nouvelle commande #1', time: 'Il y a 5 min', read: false },
     { id: 2, title: 'Stock : Hennesey ', time: 'Il y a 10 min', read: false },
     { id: 3, title: 'Livraison confirmée', time: 'Hier', read: true },
-  ]);
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Bordeaux Rouge', qty: 2 },
-    { id: 2, name: 'Chardonnay', qty: 1 },
   ]);
 
   const navItems = [
@@ -229,11 +228,17 @@ const Navbar: React.FC = () => {
     closeMenu();
   };
 
+  const showToast = (message: string) => {
+    setToastMessage(message);
+    window.setTimeout(() => setToastMessage(null), 2200);
+  };
+
   const markNotificationsRead = () => {
     setNotifications([]);
     setHasNotifications(false);
     setNotificationMessage('All notifications marked as read.');
     setOpenPanel(null);
+    showToast('Toutes les notifications ont ete lues.');
 
     if (notificationTimer.current) {
       window.clearTimeout(notificationTimer.current);
@@ -244,35 +249,35 @@ const Navbar: React.FC = () => {
     }, 2000);
   };
 
-  const clearCart = () => {
-    setCartCount(0);
-    setCartItems([]);
-  };
-
   const togglePanel = (panel: 'notifications' | 'cart' | 'profile') => {
     setOpenPanel((prev) => (prev === panel ? null : panel));
+  };
+
+  const handleLogout = () => {
+    setOpenPanel(null);
+    navigate('/login');
   };
 
   const handleNotificationClick = (id: number) => {
     setNotifications((prev) => prev.filter((item) => item.id !== id));
     setHasNotifications(false);
+    showToast('Notification supprimee.');
   };
 
-  const handleCartItemClick = (id: number) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
-    setCartCount((prev) => Math.max(prev - 1, 0));
+  const handleCartItemClick = (id: string) => {
+    removeItem(id);
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <div className="navbar-brand">
+        <NavLink className="navbar-brand" to="/voxup" onClick={handleNavClick}>
           <img
             src={brandLogo}
             alt="Bourchann & Co"
             className="navbar-brand__img"
           />
-        </div>
+        </NavLink>
 
         <button
           className={`hamburger ${isMenuOpen ? 'active' : ''}`}
@@ -403,12 +408,17 @@ const Navbar: React.FC = () => {
                   cartItems.map((item) => (
                     <button
                       key={item.id}
-                      className="panel-item"
+                      className="panel-item panel-item--cart"
                       type="button"
                       onClick={() => handleCartItemClick(item.id)}
                     >
+                      {item.image ? (
+                        <img className="panel-item__image" src={item.image} alt="" />
+                      ) : null}
                       <span className="panel-item__title">{item.name}</span>
-                      <span className="panel-item__time">x{item.qty}</span>
+                      <span className="panel-item__meta">
+                        {item.price.toFixed(2)} MAD · x{item.qty}
+                      </span>
                     </button>
                   ))
                 )}
@@ -438,10 +448,15 @@ const Navbar: React.FC = () => {
                 <button className="panel-item" type="button">
                   <span className="panel-item__title">Parametres</span>
                 </button>
-                <button className="panel-item" type="button">
+                <button className="panel-item" type="button" onClick={handleLogout}>
                   <span className="panel-item__title">Deconnexion</span>
                 </button>
               </div>
+            </div>
+          ) : null}
+          {toastMessage ? (
+            <div className="nav-toast" role="status">
+              {toastMessage}
             </div>
           ) : null}
         </div>
